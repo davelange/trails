@@ -10,7 +10,7 @@ defmodule TrailsWeb.UserSocket do
   # Uncomment the following line to define a "room:*" topic
   # pointing to the `TrailsWeb.RoomChannel`:
   #
-  # channel "room:*", TrailsWeb.RoomChannel
+  channel "room:*", TrailsWeb.TrailsChannel
   #
   # To create a channel file, use the mix task:
   #
@@ -18,7 +18,6 @@ defmodule TrailsWeb.UserSocket do
   #
   # See the [`Channels guide`](https://hexdocs.pm/phoenix/channels.html)
   # for further details.
-
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
