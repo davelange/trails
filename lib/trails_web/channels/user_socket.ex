@@ -10,7 +10,7 @@ defmodule TrailsWeb.UserSocket do
   # Uncomment the following line to define a "room:*" topic
   # pointing to the `TrailsWeb.RoomChannel`:
   #
-  channel "room:*", TrailsWeb.TrailsChannel
+  channel "trails:*", TrailsWeb.TrailsChannel
   #
   # To create a channel file, use the mix task:
   #

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/phoenix": "^1.6.5"
+  }
+}
