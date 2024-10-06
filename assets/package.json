@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@types/phoenix": "^1.6.5"
+    "@types/phoenix": "^1.6.5",
+    "unique-names-generator": "^4.7.1"
   }
 }

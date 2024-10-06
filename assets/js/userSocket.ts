@@ -1,4 +1,5 @@
 import { Socket } from "phoenix";
+import { OnJoinData, Position, UserPosition, UserUpdate } from "./types";
 
 // And connect to the path in "lib/trails_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
@@ -8,24 +9,26 @@ let socket = new Socket("/socket", {
 
 socket.connect();
 
-type NewPositionData = {
-  x: number;
-  y: number;
-};
-
-type Channel = {
-  onConnect: () => void;
+export type Channel = {
+  args: { user_name: string };
+  onConnect: (data: OnJoinData) => void;
   onConnectFail: () => void;
-  onNewPos: (data: NewPositionData) => void;
+  onNewPos: (data: UserPosition) => void;
+  onUserUpdate: (data: UserUpdate) => void;
 };
 
-export function connect({ onConnect, onConnectFail, onNewPos }: Channel) {
-  let channel = socket.channel("trails:lobby", {});
+export function connect({
+  args,
+  onConnect,
+  onConnectFail,
+  onNewPos,
+  onUserUpdate,
+}: Channel) {
+  let channel = socket.channel("trails:lobby", args);
   channel
     .join()
     .receive("ok", (resp) => {
-      console.log("Joined successfully", resp);
-      onConnect();
+      onConnect(resp);
     })
     .receive("error", (resp) => {
       console.log("Unable to join", resp);
@@ -33,8 +36,9 @@ export function connect({ onConnect, onConnectFail, onNewPos }: Channel) {
     });
 
   channel.on("new_pos", onNewPos);
+  channel.on("user_update", onUserUpdate);
 
-  const sendNewPos = (data: NewPositionData) => channel.push("new_pos", data);
+  const sendNewPos = (data: Position) => channel.push("new_pos", data);
 
   return { sendNewPos };
 }

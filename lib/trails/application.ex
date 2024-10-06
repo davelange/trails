@@ -14,7 +14,8 @@ defmodule Trails.Application do
       # Start a worker by calling: Trails.Worker.start_link(arg)
       # {Trails.Worker, arg},
       # Start to serve requests, typically the last entry
-      TrailsWeb.Endpoint
+      TrailsWeb.Endpoint,
+      TrailsWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
