@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "@types/phoenix": "^1.6.5",
+    "canvas-confetti": "^1.9.3",
     "unique-names-generator": "^4.7.1"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.6.4"
   }
 }

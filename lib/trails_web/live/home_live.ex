@@ -6,17 +6,22 @@ defmodule TrailsWeb.HomeLive do
   def mount(_params, _session, socket) do
     TrailsWeb.Endpoint.subscribe(TrailsChannel.name())
 
-    self_name = Tracker.create_name()
+    own_name = Tracker.create_name()
+    current_users = Tracker.get_users().users
 
     updated =
       socket
-      |> assign(users: exclude_self(Tracker.get_users().users, self_name), name: self_name)
-      |> push_event("mount", %{name: self_name})
+      |> assign(users: current_users, name: own_name)
+      |> push_event("mount", %{name: own_name})
 
     {:ok, updated}
   end
 
   def handle_info(%{event: "presence_diff"}, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "confetti"}, socket) do
     {:noreply, socket}
   end
 

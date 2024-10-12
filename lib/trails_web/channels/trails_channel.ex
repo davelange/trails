@@ -27,6 +27,13 @@ defmodule TrailsWeb.TrailsChannel do
   end
 
   @impl true
+  def handle_in("confetti", payload, socket) do
+    broadcast(socket, "confetti", payload)
+
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info(:after_join, socket) do
     Tracker.track_user(socket)
     broadcast(socket, "user_update", Tracker.get_users())

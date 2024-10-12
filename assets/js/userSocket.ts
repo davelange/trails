@@ -15,7 +15,7 @@ export type Position = {
 
 type OnJoin = (args: { channel: Channel }) => void;
 
-export function connect({ onJoin, name }: { onJoin: OnJoin; name: string }) {
+export function connect({ name, onJoin }: { onJoin: OnJoin; name: string }) {
   let channel = socket.channel("trails:main", { name });
   channel
     .join()

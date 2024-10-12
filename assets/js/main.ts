@@ -1,4 +1,5 @@
 import { connect, Position } from "./userSocket";
+import confetti from "canvas-confetti";
 
 let selfElement: HTMLElement;
 
@@ -23,9 +24,7 @@ function updateLocalPosition({ x, y }: Position) {
   }
 }
 
-window.addEventListener("phx:mount", (event: unknown) => {
-  const name = (event as any).detail.name;
-
+function onMount(name: string) {
   connect({
     name,
     onJoin({ channel }) {
@@ -39,7 +38,25 @@ window.addEventListener("phx:mount", (event: unknown) => {
         throttledSend({ x, y });
       };
 
+      const handleClick = (event: MouseEvent) => {
+        channel.push("confetti", {
+          x: event.clientX / window.innerWidth,
+          y: event.clientY / window.innerHeight,
+        });
+      };
+
+      channel.on("confetti", (position) => {
+        confetti({
+          origin: position,
+        });
+      });
+
       document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("click", handleClick);
     },
   });
+}
+
+window.addEventListener("phx:mount", (event: unknown) => {
+  onMount((event as any).detail.name);
 });
