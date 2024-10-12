@@ -10,33 +10,19 @@ let socket = new Socket("/socket", {
 socket.connect();
 
 export type Channel = {
-  args: { user_name: string };
-  onConnect: (data: OnJoinData) => void;
-  onConnectFail: () => void;
-  onNewPos: (data: UserPosition) => void;
-  onUserUpdate: (data: UserUpdate) => void;
+  user_name: string;
 };
 
-export function connect({
-  args,
-  onConnect,
-  onConnectFail,
-  onNewPos,
-  onUserUpdate,
-}: Channel) {
-  let channel = socket.channel("trails:lobby", args);
+export function connect({ user_name }: Channel) {
+  let channel = socket.channel("trails:main", { user_name });
   channel
     .join()
     .receive("ok", (resp) => {
-      onConnect(resp);
+      console.log("Joined", resp);
     })
     .receive("error", (resp) => {
       console.log("Unable to join", resp);
-      onConnectFail();
     });
-
-  channel.on("new_pos", onNewPos);
-  channel.on("user_update", onUserUpdate);
 
   const sendNewPos = (data: Position) => channel.push("new_pos", data);
 

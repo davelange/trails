@@ -2,6 +2,7 @@
 // to get started and then uncomment the line below.
 //import "./user_socket.js"
 import "./main.js"
+import "../app.css"
 
 // You can include dependencies in two ways.
 //

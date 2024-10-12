@@ -1,12 +1,16 @@
 defmodule TrailsWeb.TrailsChannel do
   use TrailsWeb, :channel
-  alias Trails.TrailTrack
+  alias Trails.Tracker
+
+  @name "trails:main"
+
+  def name, do: @name
 
   @impl true
-  def join("trails:lobby", payload, socket) do
+  def join(@name, payload, socket) do
     send(self(), :after_join)
 
-    {:ok, TrailTrack.get_users(socket), assign(socket, :user_name, payload["user_name"])}
+    {:ok, assign(socket, :user_name, payload["user_name"])}
   end
 
   # Channels can be used in a request/response fashion
@@ -18,30 +22,24 @@ defmodule TrailsWeb.TrailsChannel do
 
   @impl true
   def handle_in("new_pos", payload, socket) do
-    TrailTrack.update(socket, payload)
-
-    broadcast(socket, "new_pos", %{
-      position: payload,
-      user_name: socket.assigns.user_name
-    })
+    Tracker.update(socket, payload)
+    broadcast(socket, "new_pos", Tracker.get_users())
 
     {:noreply, socket}
   end
 
   @impl true
   def handle_info(:after_join, socket) do
-    TrailTrack.track_user(socket)
-
-    broadcast(socket, "user_update", %{action: "join", user_name: socket.assigns.user_name})
+    Tracker.track_user(socket)
+    broadcast(socket, "user_update", Tracker.get_users())
 
     {:noreply, socket}
   end
 
   @impl true
   def terminate({:shutdown, :local_closed}, socket) do
-    TrailTrack.untrack_user(socket)
-
-    broadcast(socket, "user_update", %{action: "leave", user_name: socket.assigns.user_name})
+    Tracker.untrack_user(socket)
+    broadcast(socket, "user_update", Tracker.get_users())
 
     {:noreply, socket}
   end
