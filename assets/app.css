@@ -74,8 +74,13 @@ h6 {
   background: #eee;
   top: 0;
   left: 0;
+  transition: all 0.2s linear;
 
-  &[data-unset="true"] {
+  &[data-unset] {
     display: none;
+  }
+
+  &[data-self] {
+    transition: none;
   }
 }

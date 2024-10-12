@@ -7,10 +7,10 @@ defmodule TrailsWeb.TrailsChannel do
   def name, do: @name
 
   @impl true
-  def join(@name, _payload, socket) do
+  def join(@name, payload, socket) do
     send(self(), :after_join)
 
-    {:ok, assign(socket, :user_name, Tracker.create_name())}
+    {:ok, assign(socket, :name, payload["name"])}
   end
 
   @impl true

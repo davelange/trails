@@ -6,9 +6,14 @@ defmodule TrailsWeb.HomeLive do
   def mount(_params, _session, socket) do
     TrailsWeb.Endpoint.subscribe(TrailsChannel.name())
 
-    current_list = Tracker.get_users()
+    self_name = Tracker.create_name()
 
-    {:ok, assign(socket, users: current_list.users)}
+    updated =
+      socket
+      |> assign(users: exclude_self(Tracker.get_users().users, self_name), name: self_name)
+      |> push_event("mount", %{name: self_name})
+
+    {:ok, updated}
   end
 
   def handle_info(%{event: "presence_diff"}, socket) do
@@ -16,7 +21,11 @@ defmodule TrailsWeb.HomeLive do
   end
 
   def handle_info(%{payload: payload}, socket) do
-    {:noreply, assign(socket, users: payload.users)}
+    {:noreply, assign(socket, users: exclude_self(payload.users, socket.assigns.name))}
+  end
+
+  defp exclude_self(users, self) do
+    Enum.filter(users, &(&1.name != self))
   end
 
   defp get_position(%{position: position}),
@@ -26,9 +35,12 @@ defmodule TrailsWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
+    <div id={assigns.name} class="user" data-self>
+      <%= assigns.name %>
+    </div>
     <%= for user <- assigns.users do %>
-      <div class="user" data-unset={is_nil(user.position)} style={get_position(user)}>
-        <%= user.user_name %>
+      <div id={user.name} class="user" data-unset={is_nil(user.position)} style={get_position(user)}>
+        <%= user.name %>
       </div>
     <% end %>
     """
