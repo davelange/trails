@@ -11,4 +11,4 @@ const handleMouseMove = (event: MouseEvent) => {
   });
 };
 
-document.addEventListener("click", handleMouseMove);
+document.addEventListener("mousemove", handleMouseMove);

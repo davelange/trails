@@ -11,22 +11,23 @@ defmodule TrailsWeb.HomeLive do
     {:ok, assign(socket, users: current_list.users)}
   end
 
-  # ignore presence events
   def handle_info(%{event: "presence_diff"}, socket) do
     {:noreply, socket}
   end
 
-  def handle_info(%{payload: payload, event: event}, socket) do
-    IO.inspect(event)
-    IO.inspect(payload)
-
+  def handle_info(%{payload: payload}, socket) do
     {:noreply, assign(socket, users: payload.users)}
   end
+
+  defp get_position(%{position: position}),
+    do: "left: #{position["x"]}px; top: #{position["y"]}px"
+
+  defp get_position(_user), do: ""
 
   def render(assigns) do
     ~H"""
     <%= for user <- assigns.users do %>
-      <div class="user" style={"left: #{user.position["x"]}px; top: #{user.position["y"]}px"}>
+      <div class="user" data-unset={is_nil(user.position)} style={get_position(user)}>
         <%= user.user_name %>
       </div>
     <% end %>

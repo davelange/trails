@@ -13,8 +13,6 @@ defmodule TrailsWeb.TrailsChannel do
     {:ok, assign(socket, :user_name, Tracker.create_name())}
   end
 
-  # Channels can be used in a request/response fashion
-  # by sending replies to requests from the client
   @impl true
   def handle_in("ping", payload, socket) do
     {:reply, {:ok, payload}, socket}

@@ -1,5 +1,4 @@
 import { Socket } from "phoenix";
-import { Position } from "./types";
 
 // And connect to the path in "lib/trails_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
@@ -8,6 +7,11 @@ let socket = new Socket("/socket", {
 });
 
 socket.connect();
+
+type Position = {
+  x: number;
+  y: number;
+};
 
 export function connect() {
   let channel = socket.channel("trails:main");

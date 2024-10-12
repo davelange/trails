@@ -2,11 +2,13 @@ defmodule Trails.Tracker do
   alias TrailsWeb.TrailsChannel
   alias TrailsWeb.Presence
 
-  def create_name, do: UniqueNamesGenerator.generate([:adjectives, :animals])
+  def create_name do
+    UniqueNamesGenerator.generate([:adjectives, :animals])
+  end
 
   def track_user(socket) do
     Presence.track(socket, socket.assigns.user_name, %{
-      position: %{x: 0, y: 0}
+      position: nil
     })
   end
 

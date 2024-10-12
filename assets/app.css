@@ -69,9 +69,13 @@ h6 {
 }
 
 .user {
-  /* position: absolute; */
+  position: absolute;
   width: fit-content;
   background: #eee;
   top: 0;
   left: 0;
+
+  &[data-unset="true"] {
+    display: none;
+  }
 }
