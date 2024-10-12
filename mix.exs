@@ -43,7 +43,8 @@ defmodule Trails.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.2"}
+      {:bandit, "~> 1.2"},
+      {:unique_names_generator, "~> 0.2.0"}
     ]
   end
 

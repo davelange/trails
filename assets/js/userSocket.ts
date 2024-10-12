@@ -1,5 +1,5 @@
 import { Socket } from "phoenix";
-import { OnJoinData, Position, UserPosition, UserUpdate } from "./types";
+import { Position } from "./types";
 
 // And connect to the path in "lib/trails_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
@@ -9,12 +9,8 @@ let socket = new Socket("/socket", {
 
 socket.connect();
 
-export type Channel = {
-  user_name: string;
-};
-
-export function connect({ user_name }: Channel) {
-  let channel = socket.channel("trails:main", { user_name });
+export function connect() {
+  let channel = socket.channel("trails:main");
   channel
     .join()
     .receive("ok", (resp) => {
