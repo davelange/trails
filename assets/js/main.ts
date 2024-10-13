@@ -17,8 +17,8 @@ function throttle<T>(fn: (args: T) => void, interval = 200) {
 
 function updateLocalPosition({ x, y }: Position) {
   if (selfElement) {
-    selfElement.style.left = `${x}px`;
-    selfElement.style.top = `${y}px`;
+    selfElement.style.left = `${x}%`;
+    selfElement.style.top = `${y}%`;
   } else {
     selfElement = document.querySelector("[data-self]") as HTMLElement;
   }
@@ -33,7 +33,8 @@ function onMount(user: User) {
       );
 
       const handleMouseMove = (event: MouseEvent) => {
-        const { clientX: x, clientY: y } = event;
+        const x = (event.clientX / window.innerWidth) * 100;
+        const y = (event.clientY / window.innerHeight) * 100;
         updateLocalPosition({ x, y });
         throttledSend({ x, y });
       };

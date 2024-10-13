@@ -1,5 +1,4 @@
 defmodule TrailsWeb.Router do
-  # alias TrailsWeb.HomeLive
   use TrailsWeb, :router
 
   pipeline :browser do
@@ -18,7 +17,7 @@ defmodule TrailsWeb.Router do
   scope "/", TrailsWeb do
     pipe_through :browser
 
-    live "/", HomeLive
+    live "/", CursorTracker
   end
 
   # Other scopes may use custom stacks.

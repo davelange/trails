@@ -74,12 +74,6 @@ h6 {
   left: 0;
 
   width: fit-content;
-  padding: 4px 8px;
-  border-radius: 4px;
-
-  font-size: 14px;
-  color: #eee;
-  translate: -40% 20px;
   transition: all 0.2s linear;
 
   &[data-unset] {
@@ -88,5 +82,20 @@ h6 {
 
   &[data-self] {
     transition: none;
+  }
+
+  & svg {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -32px;
+    margin: auto;
+  }
+
+  & .name {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    translate: -45% 24px;
   }
 }
