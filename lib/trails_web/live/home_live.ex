@@ -6,13 +6,15 @@ defmodule TrailsWeb.HomeLive do
   def mount(_params, _session, socket) do
     TrailsWeb.Endpoint.subscribe(TrailsChannel.name())
 
-    own_name = Tracker.create_name()
-    current_users = Tracker.get_users().users
+    self = %{
+      name: Tracker.create_name(),
+      color: Tracker.create_color()
+    }
 
     updated =
       socket
-      |> assign(users: current_users, name: own_name)
-      |> push_event("mount", %{name: own_name})
+      |> assign(users: Tracker.get_users().users, user: self)
+      |> push_event("mount", self)
 
     {:ok, updated}
   end
@@ -25,26 +27,29 @@ defmodule TrailsWeb.HomeLive do
     {:noreply, socket}
   end
 
-  def handle_info(%{payload: payload}, socket) do
-    {:noreply, assign(socket, users: exclude_self(payload.users, socket.assigns.name))}
+  def handle_info(%{event: "user_update", payload: payload}, socket) do
+    {:noreply,
+     assign(socket, users: Tracker.exclude_self(payload.users, socket.assigns.user.name))}
   end
 
-  defp exclude_self(users, self) do
-    Enum.filter(users, &(&1.name != self))
-  end
+  defp get_style(%{position: position, color: color}),
+    do:
+      "left: #{position["x"]}px; top: #{position["y"]}px; color: #{color}; background: #{color}66"
 
-  defp get_position(%{position: position}),
-    do: "left: #{position["x"]}px; top: #{position["y"]}px"
-
-  defp get_position(_user), do: ""
+  defp get_style(_user), do: ""
 
   def render(assigns) do
     ~H"""
-    <div id={assigns.name} class="user" data-self>
-      <%= assigns.name %>
+    <div
+      id={assigns.user.name}
+      class="user"
+      data-self
+      style={"background-color: #{assigns.user.color}"}
+    >
+      <%= assigns.user.name %>
     </div>
     <%= for user <- assigns.users do %>
-      <div id={user.name} class="user" data-unset={is_nil(user.position)} style={get_position(user)}>
+      <div id={user.name} class="user" data-unset={is_nil(user.position)} style={get_style(user)}>
         <%= user.name %>
       </div>
     <% end %>

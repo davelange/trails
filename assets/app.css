@@ -70,10 +70,16 @@ h6 {
 
 .user {
   position: absolute;
-  width: fit-content;
-  background: #eee;
   top: 0;
   left: 0;
+
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  font-size: 14px;
+  color: #eee;
+  translate: -40% 20px;
   transition: all 0.2s linear;
 
   &[data-unset] {

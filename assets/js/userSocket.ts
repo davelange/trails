@@ -13,10 +13,15 @@ export type Position = {
   y: number;
 };
 
+export type User = {
+  name: string;
+  color: string;
+};
+
 type OnJoin = (args: { channel: Channel }) => void;
 
-export function connect({ name, onJoin }: { onJoin: OnJoin; name: string }) {
-  let channel = socket.channel("trails:main", { name });
+export function connect({ user, onJoin }: { onJoin: OnJoin; user: User }) {
+  let channel = socket.channel("trails:main", user);
   channel
     .join()
     .receive("ok", (resp) => {

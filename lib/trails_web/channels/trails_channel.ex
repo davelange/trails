@@ -10,7 +10,7 @@ defmodule TrailsWeb.TrailsChannel do
   def join(@name, payload, socket) do
     send(self(), :after_join)
 
-    {:ok, assign(socket, :name, payload["name"])}
+    {:ok, assign(socket, name: payload["name"], color: payload["color"])}
   end
 
   @impl true
@@ -21,7 +21,7 @@ defmodule TrailsWeb.TrailsChannel do
   @impl true
   def handle_in("new_pos", payload, socket) do
     Tracker.update(socket, payload)
-    broadcast(socket, "new_pos", Tracker.get_users())
+    broadcast(socket, "user_update", Tracker.get_users())
 
     {:noreply, socket}
   end

@@ -1,4 +1,4 @@
-import { connect, Position } from "./userSocket";
+import { connect, Position, User } from "./userSocket";
 import confetti from "canvas-confetti";
 
 let selfElement: HTMLElement;
@@ -24,9 +24,9 @@ function updateLocalPosition({ x, y }: Position) {
   }
 }
 
-function onMount(name: string) {
+function onMount(user: User) {
   connect({
-    name,
+    user,
     onJoin({ channel }) {
       const throttledSend = throttle((data: Position) =>
         channel.push("new_pos", data)
@@ -58,5 +58,5 @@ function onMount(name: string) {
 }
 
 window.addEventListener("phx:mount", (event: unknown) => {
-  onMount((event as any).detail.name);
+  onMount((event as any).detail);
 });
