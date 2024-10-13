@@ -61,6 +61,7 @@ defmodule TrailsWeb.CursorTracker do
         </div>
       </div>
     <% end %>
+    <p class="info">(Click for confetti)</p>
     """
   end
 end

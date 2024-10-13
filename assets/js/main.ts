@@ -3,7 +3,7 @@ import confetti from "canvas-confetti";
 
 let selfElement: HTMLElement;
 
-function throttle<T>(fn: (args: T) => void, interval = 200) {
+function throttle<T>(fn: (args: T) => void, interval = 500) {
   let enabled = true;
 
   return (data: T) => {
